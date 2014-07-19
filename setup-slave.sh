@@ -5,12 +5,13 @@ cd /root/spark-ec2
 
 source ec2-variables.sh
 
-# Set hostname based on EC2 private DNS name, so that it is set correctly
-# even if the instance is restarted with a different private DNS name
-PRIVATE_DNS=`wget -q -O - http://instance-data.ec2.internal/latest/meta-data/local-hostname`
+PRIVATE_DNS=`wget -q -O - http://169.254.169.254/latest/meta-data/hostname`
 hostname $PRIVATE_DNS
 echo $PRIVATE_DNS > /etc/hostname
-HOSTNAME=$PRIVATE_DNS  # Fix the bash built-in hostname variable too
+echo "127.0.0.1 $PRIVATE_DNS" >> /etc/hosts
+export HOSTNAME=$PRIVATE_DNS
+
+PUBLIC_IP=`wget -q -O - http://169.254.169.254/latest/meta-data/public-ipv4`
 
 echo "Setting up slave on `hostname`..."
 
