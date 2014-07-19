@@ -9,13 +9,13 @@ source /root/.bash_profile
 # Load the cluster variables set by the deploy script
 source ec2-variables.sh
 
-# Set hostname based on EC2 private DNS name, so that it is set correctly
-# even if the instance is restarted with a different private DNS name
-PRIVATE_DNS=`wget -q -O - http://instance-data.ec2.internal/latest/meta-data/local-hostname`
-PUBLIC_DNS=`wget -q -O - http://instance-data.ec2.internal/latest/meta-data/hostname`
+PRIVATE_DNS=`wget -q -O - http://169.254.169.254/latest/meta-data/hostname`
 hostname $PRIVATE_DNS
 echo $PRIVATE_DNS > /etc/hostname
-export HOSTNAME=$PRIVATE_DNS  # Fix the bash built-in hostname variable too
+echo "127.0.0.1 $PRIVATE_DNS" >> /etc/hosts
+export HOSTNAME=$PRIVATE_DNS
+
+PUBLIC_IP=`wget -q -O - http://169.254.169.254/latest/meta-data/public-ipv4`
 
 echo "Setting up Spark on `hostname`..."
 
