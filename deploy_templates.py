@@ -64,6 +64,7 @@ template_vars = {
   "spark_worker_instances": "%d" %  worker_instances,
   "spark_worker_cores": "%d" %  worker_cores,
   "spark_master_opts": os.getenv("SPARK_MASTER_OPTS", ""),
+  "public_dns_name": os.getenv("PUBLIC_DNS_NAME", ""),
   "spark_version": os.getenv("SPARK_VERSION"),
   "shark_version": os.getenv("SHARK_VERSION"),
   "hadoop_major_version": os.getenv("HADOOP_MAJOR_VERSION"),
